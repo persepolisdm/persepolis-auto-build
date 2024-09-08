@@ -29,17 +29,17 @@ jobs:
           pyinstaller '.\persepolis\Persepolis Download Manager.py' -F -w -i '..\persepolis-windows-package-build\persepolis1.ico' -n "Persepolis Download Manager" --version-file '..\persepolis-windows-package-build\version.py' --clean
       - name: Extract ffmpeg
         run: 7z e ffmpeg-master-latest-win64-gpl.zip -o'.\persepolis\dist' ffmpeg-master-latest-win64-gpl/bin/ffmpeg.exe
-      - name: list
-        run: |
-          cd persepolis\dist\
-          dir
       - name: Build Installer
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
         with:
           path: persepolis-windows-package-build\setupX64.iss
           options: /O+
+      - name: list
+        run: |
+          cd .\persepolis-windows-package-build\Outputt\
+          dir
       - name: Archive build
         uses: actions/upload-artifact@v4
         with:
           name: Archive build
-          path: persepolis-windows-package-build\Outputt\
+          path: .\persepolis-windows-package-build\Outputt\
