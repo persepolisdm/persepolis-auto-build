@@ -37,7 +37,7 @@ jobs:
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
         with:
           path: persepolis-windows-package-build\setupX64.iss
-          options: /O+ /MyAppVersion=5.0.0.1
+          options: /O+
       - name: Archive build
         uses: actions/upload-artifact@v4
         with:
