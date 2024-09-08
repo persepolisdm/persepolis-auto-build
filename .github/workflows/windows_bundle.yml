@@ -22,7 +22,9 @@ jobs:
           repository: "yt-dlp/FFmpeg-Builds"
           latest: true
           fileName: "ffmpeg-master-latest-win64-gpl.zip"
+      - name: Build
+        run: |
+          pyinstaller '.\persepolis\resources\PersepolisBI.py' -F -i '.\persepolis-windows-package-build\persepolis2.ico' -n "PersepolisBI" --version-file '.\persepolis-windows-package-build\bi_version.py' --clean
+          pyinstaller '.\persepolis\persepolis\Persepolis Download Manager.py' -F -w -i '.\persepolis-windows-package-build\persepolis1.ico' -n "Persepolis Download Manager" --version-file '.\persepolis-windows-package-build\version.py' --clean
       - name: list
         run: dir
-      - name: Build
-        run: pyinstaller '.\persepolis\resources\PersepolisBI.py' -F -i '.\persepolis-windows-package-build\persepolis2.ico' -n "PersepolisBI" --version-file '.\persepolis-windows-package-build\bi_version.py' --clean
