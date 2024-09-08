@@ -25,4 +25,4 @@ jobs:
       - name: list
         run: dir
       - name: Build
-        run: pyinstaller '.\persepolis\resources\PersepolisBI.py' -F -i '.\persepolis-windows-package-build\persepolis-windows-package-build\persepolis2.ico' -n "PersepolisBI" --version-file '.\persepolis-windows-package-build\persepolis-windows-package-build\bi_version.py' --clean
+        run: pyinstaller '.\persepolis\resources\PersepolisBI.py' -F -i '.\persepolis-windows-package-build\persepolis2.ico' -n "PersepolisBI" --version-file '.\persepolis-windows-package-build\bi_version.py' --clean
