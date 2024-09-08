@@ -14,8 +14,8 @@ jobs:
         with:
           repository: persepolisdm/persepolis-windows-package-build
           path: persepolis-windows-package-build
-      - name: Install requirements
-        run: pip install PySide6 requests pypiwin32 setproctitle psutil yt_dlp pyinstaller urllib3
+      #- name: Install requirements
+     #   run: pip install PySide6 requests pypiwin32 setproctitle psutil yt_dlp pyinstaller urllib3
       - name: Download ffmpeg
         uses: robinraju/release-downloader@v1.10
         with:
