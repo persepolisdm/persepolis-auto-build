@@ -1,0 +1,28 @@
+name: bundle Persepolis Download Manager for windosw
+on: workflow_dispatch
+jobs:
+  bundle-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Get persepolis
+        uses: actions/checkout@v4
+        with:
+          repository: persepolisdm/persepolis
+          path: persepolis
+      - name: Get build assets
+        uses: actions/checkout@v4
+        with:
+          repository: persepolisdm/persepolis-windows-package-build
+          path: persepolis-windows-package-build
+      - name: Install requirements
+        run: pip install PySide6 requests pypiwin32 setproctitle psutil yt_dlp pyinstaller urllib3
+      - name: Download ffmpeg
+        uses: robinraju/release-downloader@v1.10
+        with:
+          repository: "yt-dlp/FFmpeg-Builds"
+          latest: true
+          fileName: "ffmpeg-master-latest-win64-gpl.zip"
+      - name: list
+        run: dir
+      - name: Build
+        run: pyinstaller '.\persepolis\resources\PersepolisBI.py' -F -i '.\persepolis-windows-package-build\persepolis-windows-package-build\persepolis2.ico' -n "PersepolisBI" --version-file '.\persepolis-windows-package-build\persepolis-windows-package-build\bi_version.py' --clean
