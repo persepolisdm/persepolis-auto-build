@@ -34,10 +34,6 @@ jobs:
         with:
           path: persepolis-windows-package-build\setupX64.iss
           options: /O+
-      - name: list
-        run: |
-          cd .\persepolis-windows-package-build\Output\
-          dir
       - name: Archive build
         uses: actions/upload-artifact@v4
         with:
