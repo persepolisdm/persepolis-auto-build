@@ -32,5 +32,5 @@ jobs:
       - name: list
         run: |
           dir
-          cd persepolis\dist
+          cd persepolis\dist\ffmpeg-master-latest-win64-gpl
           dir
