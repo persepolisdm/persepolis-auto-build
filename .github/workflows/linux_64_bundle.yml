@@ -1,0 +1,32 @@
+name: bundle Persepolis Download Manager for linux
+on: workflow_dispatch
+jobs:
+  bundle-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get persepolis
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+         sudo apt -y update
+         # sudo apt -y upgrade
+         sudo apt -y install python3-virtualenv libxcb-cursor0 libxcb-shape0 libxcb-xkb1 libxkbcommon-x11-0 libxcb-keysyms1 libxcb-icccm4 libxcb-shape0 python3-pip xz-utils unzip
+      - name: Install requirements
+        run: pip install PySide6 PySide6-Addons requests setproctitle psutil yt-dlp pyinstaller urllib3
+      - name: Download ffmpeg
+        uses: robinraju/release-downloader@v1.10
+        with:
+          repository: "yt-dlp/FFmpeg-Builds"
+          latest: true
+          fileName: "ffmpeg-master-latest-linux64-gpl.tar.xz"
+      - name: Extract ffmpeg
+        run: tar -xf ffmpeg-master-latest-linux64-gpl.tar.xz ffmpeg-master-latest-linux64-gpl/bin/ffmpeg --strip-components 2
+      - name: Build
+        run: pyinstaller -n "Persepolis Download Manager" -F --clean --windowed --add-binary "ffmpeg:." persepolis/Persepolis\ Download\ Manager.py
+      - name: Archive build
+        uses: actions/upload-artifact@v4
+        with:
+          name: Archive build
+          path: dist/Persepolis\ Download\ Manager
+      - name: Test
+        run: ./dist/Persepolis\ Download\ Manager --version
