@@ -22,7 +22,7 @@ jobs:
       - name: Extract ffmpeg
         run: tar -xf ffmpeg-master-latest-linux64-gpl.tar.xz ffmpeg-master-latest-linux64-gpl/bin/ffmpeg --strip-components 2
       - name: Build
-        run: pyinstaller -n "Persepolis Download Manager" -F --clean --windowed --add-binary "ffmpeg:." persepolis/Persepolis\ Download\ Manager.py
+        run: pyinstaller -n "Persepolis Download Manager" -F --clean --windowed --add-binary "ffmpeg:." ./persepolis/persepolis/Persepolis\ Download\ Manager.py
       - name: Archive build
         uses: actions/upload-artifact@v4
         with:
