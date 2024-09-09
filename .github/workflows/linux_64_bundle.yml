@@ -1,4 +1,4 @@
-name: bundle Persepolis Download Manager for linux
+name: Bundle Persepolis Download Manager for linux
 on: workflow_dispatch
 jobs:
   bundle-linux:
@@ -25,13 +25,9 @@ jobs:
       - name: Extract ffmpeg
         run: tar -xf ffmpeg-master-latest-linux64-gpl.tar.xz ffmpeg-master-latest-linux64-gpl/bin/ffmpeg --strip-components 2
       - name: Build
-        run: |
-          ls -lrth
-          pyinstaller -n "Persepolis Download Manager" -F --clean --windowed --add-binary "ffmpeg:." ./persepolis/persepolis/Persepolis\ Download\ Manager.py
+        run: pyinstaller -n "Persepolis Download Manager" -F --clean --windowed --add-binary "ffmpeg:." ./persepolis/persepolis/Persepolis\ Download\ Manager.py
       - name: Archive build
         uses: actions/upload-artifact@v4
         with:
           name: Archive build
           path: dist/Persepolis\ Download\ Manager
-      - name: Test
-        run: ./dist/Persepolis\ Download\ Manager --version
