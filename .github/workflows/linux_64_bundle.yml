@@ -6,6 +6,9 @@ jobs:
     steps:
       - name: Get persepolis
         uses: actions/checkout@v4
+        with:
+          repository: persepolisdm/persepolis
+          path: persepolis
       - name: Install dependencies
         run: |
          sudo apt -y update
