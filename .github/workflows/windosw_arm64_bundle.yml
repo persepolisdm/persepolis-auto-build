@@ -1,4 +1,4 @@
-name: bundle Persepolis Download Manager for windosw
+name: bundle PersepolisDManager for windosw arm64
 on: workflow_dispatch
 jobs:
   bundle-windows:
