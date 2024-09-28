@@ -1,4 +1,4 @@
-name: bundle PersepolisDM for windosw x64
+name: Package Persepolis DM for windows x64
 on: workflow_dispatch
 jobs:
   bundle-windows:
