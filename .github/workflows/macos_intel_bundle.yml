@@ -17,11 +17,9 @@ jobs:
       - name: Build
         run: |
           cd mac-package-build
-          - name: Get persepolis
-          uses: actions/checkout@v4
-          with:
-            repository: persepolisdm/persepolis
-            path: persepolis
+          git clone https://github.com/persepolisdm/persepolis.git
+          find persepolis/persepolis -type f -exec perl -i -pe 's/persepolis.scripts/scripts/g' '{}' \;
+          find persepolis/persepolis -type f -exec perl -i -pe 's/persepolis.gui/gui/g' '{}' \;
           pyinstaller app.spec
       - name: Download ffmpeg
         run: wget --trust-server-names https://evermeet.cx/ffmpeg/getrelease/ffmpeg/zip -O ffmpeg.zip && unzip -o ffmpeg.zip && rm ffmpeg.zip
