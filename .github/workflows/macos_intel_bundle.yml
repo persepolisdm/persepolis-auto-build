@@ -12,7 +12,7 @@ jobs:
           path: mac-package-build
       - name: Install requirements
         run: pip install PySide6 requests yt_dlp pyinstaller urllib3 pysocks
-      - name: Install wiwt Brew
+      - name: Install with Brew
         run: brew install wget create-dmg unzip
       - name: Download ffmpeg
         run: wget --trust-server-names https://evermeet.cx/ffmpeg/getrelease/ffmpeg/zip -O ffmpeg.zip && unzip -o ffmpeg.zip && rm ffmpeg.zip
