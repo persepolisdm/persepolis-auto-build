@@ -1,7 +1,7 @@
 name: Package Persepolis DM for macos intel
 on: workflow_dispatch
 jobs:
-  bundle-windows:
+  bundle-macos:
     runs-on: macos-latest
     steps:
 
