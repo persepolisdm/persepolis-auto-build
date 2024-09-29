@@ -23,10 +23,7 @@ jobs:
           find persepolis/persepolis -type f -exec perl -i -pe 's/persepolis.scripts/scripts/g' '{}' \;
           find persepolis/persepolis -type f -exec perl -i -pe 's/persepolis.gui/gui/g' '{}' \;
           pyinstaller app.spec
-      - name: Add Prerequisites
-        run: |
           cp ffmpeg 'dist/Persepolis Download Manager.app/Contents/MacOS/'
-          rm -rf 'Persepolis Download Manager.app'
           mv 'dist/Persepolis Download Manager.app' .
       - name: Build DMG
         run: |
