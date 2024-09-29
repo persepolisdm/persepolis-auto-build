@@ -1,0 +1,18 @@
+name: Package Persepolis DM for macos intel
+on: workflow_dispatch
+jobs:
+  bundle-windows:
+    runs-on: macos-latest
+    steps:
+      - name: Get persepolis
+        uses: actions/checkout@v4
+        with:
+          repository: persepolisdm/persepolis
+          path: persepolis
+      - name: Get build assets
+        uses: actions/checkout@v4
+        with:
+          repository: persepolisdm/mac-package-build
+          path: mac-package-build
+      - name: Install requirements
+        run: pip install PySide6 requests yt_dlp pyinstaller urllib3 pysocks
