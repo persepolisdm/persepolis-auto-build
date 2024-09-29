@@ -13,7 +13,7 @@ jobs:
       - name: Install requirements
         run: pip install PySide6 requests yt_dlp pyinstaller urllib3 pysocks
       - name: Install with Brew
-        run: brew install create-dmg unzip
+        run: brew install create-dmg unzip tree
       - name: Build
         run: |
           cd mac-package-build
@@ -42,6 +42,10 @@ jobs:
           test -f "dist/Persepolis Download Manager.dmg" && rm "dist/Persepolis Download Manager.dmg"
           create-dmg --volname "Persepolis Download Manager" --volicon "icon.icns" --window-pos 200 120 --window-size 600 300 --icon-size 100 --icon "Persepolis Download Manager.app" 120 120 --hide-extension "Persepolis Download Manager.app" --app-drop-link 425 120 "Persepolis Download Manager.dmg" "dist/dmg/"
           ls -ltrh 
+      - name: Test
+        run: |
+          ls -ltrh
+          tree
       - name: Archive build
         uses: actions/upload-artifact@v4
         with:
