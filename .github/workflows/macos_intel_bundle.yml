@@ -4,11 +4,7 @@ jobs:
   bundle-windows:
     runs-on: macos-latest
     steps:
-      - name: Get persepolis
-        uses: actions/checkout@v4
-        with:
-          repository: persepolisdm/persepolis
-          path: persepolis
+
       - name: Get build assets
         uses: actions/checkout@v4
         with:
@@ -16,3 +12,16 @@ jobs:
           path: mac-package-build
       - name: Install requirements
         run: pip install PySide6 requests yt_dlp pyinstaller urllib3 pysocks
+      - name: Install whit Brew
+        run: brew install wget create-dmg
+      - name: Build
+        run: |
+          cd mac-package-build
+          - name: Get persepolis
+          uses: actions/checkout@v4
+          with:
+            repository: persepolisdm/persepolis
+            path: persepolis
+          pyinstaller app.spec
+      - name: Download ffmpeg
+        run: wget --trust-server-names https://evermeet.cx/ffmpeg/getrelease/ffmpeg/zip -O ffmpeg.zip && unzip -o ffmpeg.zip && rm ffmpeg.zip
