@@ -24,16 +24,19 @@ jobs:
           ls -ltrh
       - name: Download ffmpeg
         run: |
+            cd mac-package-build
             wget --trust-server-names https://evermeet.cx/ffmpeg/getrelease/ffmpeg/zip -O ffmpeg.zip && unzip -o ffmpeg.zip && rm ffmpeg.zip
             ls -ltrh
       - name: Add prerequisites
         run: |
+          cd mac-package-build
           ls -ltrh
           ls -ltrh dist/
           cp ffmpeg 'dist/Persepolis Download Manager.app/Contents/MacOS/'
           mv 'dist/Persepolis Download Manager.app' .
       - name: Build DMG
         run: |
+          cd mac-package-build
           mkdir -p dist/dmg
           mv 'Persepolis Download Manager.app' dist/dmg
           test -f "dist/Persepolis Download Manager.dmg" && rm "dist/Persepolis Download Manager.dmg"
