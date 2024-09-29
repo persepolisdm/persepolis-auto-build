@@ -49,4 +49,5 @@ jobs:
       - name: Archive build
         uses: actions/upload-artifact@v4
         with:
-          name: ./mac-package-build/Persepolis Download Manager.dmg
+          name: Persepolis Download Manager.dmg
+          path: ./mac-package-build/Persepolis Download Manager.dmg
