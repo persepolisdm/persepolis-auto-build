@@ -12,10 +12,13 @@ jobs:
       - name: Install dependencies
         run: |
          sudo apt -y update
-         sudo apt -y upgrade
+         # sudo apt -y upgrade
          sudo apt -y install python3-virtualenv libxcb-cursor0 libxcb-shape0 libxcb-xkb1 libxkbcommon-x11-0 libxcb-keysyms1 libxcb-icccm4 libxcb-shape0 python3-pip xz-utils unzip
       - name: Install requirements
-        run: pip install Pyqt5 requests setproctitle psutil yt-dlp pyinstaller urllib3
+        run: |
+          virtualenv venv
+          source venv/bin/activate 
+          pip install Pyqt5 requests setproctitle psutil yt-dlp pyinstaller urllib3
       - name: Download ffmpeg
         uses: robinraju/release-downloader@v1.10
         with:
@@ -25,7 +28,9 @@ jobs:
       - name: Extract ffmpeg
         run: tar -xf ffmpeg-master-latest-linux64-gpl.tar.xz ffmpeg-master-latest-linux64-gpl/bin/ffmpeg --strip-components 2
       - name: Build
-        run: pyinstaller -n "Persepolis Download Manager" -F --clean --windowed --add-binary "ffmpeg:." ./persepolis/persepolis/Persepolis\ Download\ Manager.py
+        run: |
+          source venv/bin/activate 
+          pyinstaller -n "Persepolis Download Manager" -F --clean --windowed --add-binary "ffmpeg:." ./persepolis/persepolis/Persepolis\ Download\ Manager.py
       - name: Archive build
         uses: actions/upload-artifact@v4
         with:
