@@ -1,0 +1,53 @@
+name: Package Persepolis DM for macos intel
+on: workflow_dispatch
+jobs:
+  bundle-macos:
+    runs-on: macos-latest
+    steps:
+
+      - name: Get build assets
+        uses: actions/checkout@v4
+        with:
+          repository: persepolisdm/mac-package-build
+          path: mac-package-build
+      - name: Install requirements
+        run: pip install PySide6 requests yt_dlp pyinstaller urllib3 pysocks
+      - name: Install with Brew
+        run: brew install create-dmg unzip tree
+      - name: Build
+        run: |
+          cd mac-package-build
+          git clone https://github.com/persepolisdm/persepolis.git
+          find persepolis/persepolis -type f -exec perl -i -pe 's/persepolis.scripts/scripts/g' '{}' \;
+          find persepolis/persepolis -type f -exec perl -i -pe 's/persepolis.gui/gui/g' '{}' \;
+          pyinstaller app_m.spec
+          ls -ltrh
+      - name: Download ffmpeg
+        run: |
+            cd mac-package-build
+            wget --trust-server-names https://evermeet.cx/ffmpeg/getrelease/ffmpeg/zip -O ffmpeg.zip && unzip -o ffmpeg.zip && rm ffmpeg.zip
+            ls -ltrh
+      - name: Add prerequisites
+        run: |
+          cd mac-package-build
+          ls -ltrh
+          ls -ltrh dist/
+          cp ffmpeg 'dist/Persepolis Download Manager.app/Contents/MacOS/'
+          mv 'dist/Persepolis Download Manager.app' .
+      - name: Build DMG
+        run: |
+          cd mac-package-build
+          mkdir -p dist/dmg
+          mv 'Persepolis Download Manager.app' dist/dmg
+          test -f "dist/Persepolis Download Manager.dmg" && rm "dist/Persepolis Download Manager.dmg"
+          create-dmg --volname "Persepolis Download Manager" --volicon "icon.icns" --window-pos 200 120 --window-size 600 300 --icon-size 100 --icon "Persepolis Download Manager.app" 120 120 --hide-extension "Persepolis Download Manager.app" --app-drop-link 425 120 "Persepolis Download Manager.dmg" "dist/dmg/"
+          ls -ltrh 
+      - name: Test
+        run: |
+          ls -ltrh
+          tree
+      - name: Archive build
+        uses: actions/upload-artifact@v4
+        with:
+          name: Persepolis Download Manager.dmg
+          path: ./mac-package-build/Persepolis Download Manager.dmg
