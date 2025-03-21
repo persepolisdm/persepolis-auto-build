@@ -2,7 +2,7 @@ name: Package Persepolis DM for macos intel
 on: workflow_dispatch
 jobs:
   bundle-macos:
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
 
       - name: Get build assets
