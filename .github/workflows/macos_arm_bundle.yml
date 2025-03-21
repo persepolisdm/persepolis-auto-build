@@ -20,7 +20,7 @@ jobs:
           git clone https://github.com/persepolisdm/persepolis.git
           find persepolis/persepolis -type f -exec perl -i -pe 's/persepolis.scripts/scripts/g' '{}' \;
           find persepolis/persepolis -type f -exec perl -i -pe 's/persepolis.gui/gui/g' '{}' \;
-          pyinstaller app_m.spec
+          pyinstaller app.spec
           ls -ltrh
       - name: Download ffmpeg
         run: |
