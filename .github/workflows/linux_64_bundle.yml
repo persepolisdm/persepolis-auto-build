@@ -8,7 +8,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: persepolisdm/persepolis
-          path: persepolis
+          path: .
       - name: Install dependencies
         run: |
          sudo apt -y update
@@ -30,7 +30,7 @@ jobs:
       - name: Build
         run: |
           source venv/bin/activate 
-          pyinstaller -n "Persepolis Download Manager" -F --clean --windowed --add-binary "ffmpeg:." ./persepolis/persepolis/Persepolis\ Download\ Manager.py
+          pyinstaller -n "Persepolis Download Manager" -F --clean --windowed --add-binary "ffmpeg:." ./persepolis/Persepolis\ Download\ Manager.py
       - name: Archive build
         uses: actions/upload-artifact@v4
         with:
