@@ -13,7 +13,13 @@ jobs:
         run: |
          sudo apt -y update
          # sudo apt -y upgrade
-         sudo apt -y install python3-virtualenv libxcb-cursor0 libxcb-shape0 libxcb-xkb1 libxkbcommon-x11-0 libxcb-keysyms1 libxcb-icccm4 libxcb-shape0 python3-pip xz-utils unzip
+         sudo apt -y install python3-virtualenv libxcb-cursor0 libxcb-shape0 libxcb-xkb1 \
+          libxkbcommon-x11-0 libxcb-keysyms1 libxcb-icccm4 libxcb-shape0 \
+          python3-pip xz-utils unzip libpulse0 libpulse-mainloop-glib0 \
+          libspeechd2 libgstreamer1.0-0 libgstreamer-plugins-base1.0-0 \
+          libgstaudio-1.0-0 libgstpbutils-1.0-0 libgstvideo-1.0-0 \
+          libgstapp-1.0-0 libgstallocators-1.0-0 \
+          libxcb-xinerama0
       - name: Install requirements
         run: |
           virtualenv venv
