@@ -1,0 +1,57 @@
+name: Package Persepolis DM for linux x64 with Nuitka
+on: workflow_dispatch
+
+jobs:
+  bundle-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get persepolis
+        uses: actions/checkout@v4
+        with:
+          repository: persepolisdm/persepolis
+          path: .
+
+      - name: Install dependencies
+        run: |
+          sudo apt -y update
+          sudo apt -y install python3-virtualenv libxcb-cursor0 libxcb-shape0 libxcb-xkb1 \
+            libxkbcommon-x11-0 libxcb-keysyms1 libxcb-icccm4 libxcb-shape0 \
+            python3-pip xz-utils unzip libpulse0 libpulse-mainloop-glib0 \
+            libspeechd2 libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libxcb-xinerama0 \
+            build-essential python3-dev python3-setuptools zlib1g-dev patchelf
+
+      - name: Install Python packages
+        run: |
+          virtualenv venv
+          source venv/bin/activate
+          pip install PyQt5 requests setproctitle psutil yt-dlp urllib3 nuitka ordered-set zstandard
+
+      - name: Download ffmpeg
+        uses: robinraju/release-downloader@v1.10
+        with:
+          repository: "yt-dlp/FFmpeg-Builds"
+          latest: true
+          fileName: "ffmpeg-master-latest-linux64-gpl.tar.xz"
+
+      - name: Extract ffmpeg
+        run: |
+          mkdir -p ffmpeg-bin
+          tar -xf ffmpeg-master-latest-linux64-gpl.tar.xz --strip-components=2 -C ffmpeg-bin ffmpeg-master-latest-linux64-gpl/bin/ffmpeg
+
+      - name: Build with Nuitka
+        run: |
+          source venv/bin/activate
+          chmod +x ffmpeg-bin/ffmpeg
+          python -m nuitka \
+            --standalone \
+            --onefile \
+            --nofollow-import-to=unittest \
+            --include-data-files="ffmpeg-bin/ffmpeg=." \
+            --output-filename="Persepolis Download Manager" \
+            "./persepolis/Persepolis Download Manager.py"
+
+      - name: Archive build
+        uses: actions/upload-artifact@v4
+        with:
+          name: Persepolis_Download_Manager_linux
+          path: Persepolis\ Download\ Manager
