@@ -45,10 +45,12 @@ jobs:
           python -m nuitka \
             --standalone \
             --onefile \
+            --enable-plugin=pyqt5 \
             --nofollow-import-to=unittest \
             --include-data-files="ffmpeg-bin/ffmpeg=." \
             --output-filename="Persepolis Download Manager" \
             "./persepolis/Persepolis Download Manager.py"
+
 
       - name: Archive build
         uses: actions/upload-artifact@v4
