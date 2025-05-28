@@ -1,0 +1,68 @@
+name: Package Persepolis DM for windows x64 with Nuitka
+on: workflow_dispatch
+
+jobs:
+  bundle-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Get persepolis
+        uses: actions/checkout@v4
+        with:
+          repository: persepolisdm/persepolis
+          path: persepolis
+
+      - name: Get build assets
+        uses: actions/checkout@v4
+        with:
+          repository: persepolisdm/persepolis-windows-package-build
+          path: persepolis-windows-package-build
+
+      - name: Install requirements
+        run: |
+          pip install PySide6 requests pypiwin32 setproctitle psutil yt_dlp urllib3 pysocks nuitka ordered-set zstandard
+
+      - name: Download ffmpeg
+        uses: robinraju/release-downloader@v1.10
+        with:
+          repository: "yt-dlp/FFmpeg-Builds"
+          latest: true
+          fileName: "ffmpeg-master-latest-win64-gpl.zip"
+
+      - name: Build with Nuitka
+        run: |
+          cd persepolis
+          python -m nuitka ^
+            --standalone ^
+            --onefile ^
+            --windows-icon-from-ico=..\persepolis-windows-package-build\persepolis2.ico ^
+            --windows-version-info-file=..\persepolis-windows-package-build\bi_version.py ^
+            --output-filename="PersepolisBI.exe" ^
+            resources\PersepolisBI.py
+
+          python -m nuitka ^
+            --standalone ^
+            --onefile ^
+            --windows-icon-from-ico=..\persepolis-windows-package-build\persepolis1.ico ^
+            --windows-disable-console ^
+            --windows-version-info-file=..\persepolis-windows-package-build\version.py ^
+            --output-filename="Persepolis Download Manager.exe" ^
+            "persepolis\Persepolis Download Manager.py"
+
+          mkdir dist
+          move PersepolisBI.exe dist\
+          move "Persepolis Download Manager.exe" dist\
+
+      - name: Extract ffmpeg
+        run: 7z e ffmpeg-master-latest-win64-gpl.zip -o'.\persepolis\dist' ffmpeg-master-latest-win64-gpl/bin/ffmpeg.exe
+
+      - name: Build Installer
+        uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
+        with:
+          path: persepolis-windows-package-build\setupX64.iss
+          options: /O+
+
+      - name: Archive build
+        uses: actions/upload-artifact@v4
+        with:
+          name: Archive build
+          path: .\persepolis-windows-package-build\Output\
