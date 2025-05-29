@@ -18,13 +18,13 @@ jobs:
             libxkbcommon-x11-0 libxcb-keysyms1 libxcb-icccm4 libxcb-shape0 \
             python3-pip xz-utils unzip libpulse0 libpulse-mainloop-glib0 \
             libspeechd2 libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libxcb-xinerama0 \
-            build-essential python3-dev python3-setuptools zlib1g-dev patchelf
+            build-essential python3-dev python3-setuptools zlib1g-dev patchelf qt6-svg-dev
 
       - name: Install Python packages
         run: |
           virtualenv venv
           source venv/bin/activate
-          pip install PyQt5 requests setproctitle psutil yt-dlp urllib3 nuitka ordered-set zstandard
+          pip install pyside6 python3-dasbus requests setproctitle psutil yt-dlp urllib3 nuitka ordered-set zstandard
 
       - name: Download ffmpeg
         uses: robinraju/release-downloader@v1.10
@@ -45,7 +45,7 @@ jobs:
           python -m nuitka \
             --standalone \
             --onefile \
-            --enable-plugin=pyqt5 \
+            --enable-plugin=pyside6 \
             --nofollow-import-to=unittest \
             --include-data-files="ffmpeg-bin/ffmpeg=." \
             --output-filename="Persepolis Download Manager" \
