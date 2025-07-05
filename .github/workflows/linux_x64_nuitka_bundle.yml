@@ -49,6 +49,9 @@ jobs:
             --enable-plugin=pyside6 \
             --nofollow-import-to=unittest \
             --include-data-files="ffmpeg-bin/ffmpeg=." \
+            --include-data-files="./resources/com.github.persepolisdm.persepolis.svg=." \
+            --include-data-files="./resources/persepolis-tray.svg=." \
+            --include-data-files="./xdg/com.github.persepolisdm.persepolis.desktop.in=." \
             --output-filename="Persepolis Download Manager" \
             "./persepolis/Persepolis Download Manager.py"
 
