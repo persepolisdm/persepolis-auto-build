@@ -1,4 +1,4 @@
-name: Package Persepolis DM for windows x64
+name: Package Persepolis DM for windows x64 with Sign
 
 on: workflow_dispatch
 
