@@ -37,58 +37,87 @@ jobs:
       - name: Extract ffmpeg
         run: 7z e ffmpeg-master-latest-win64-gpl.zip -o'.\persepolis\dist' ffmpeg-master-latest-win64-gpl/bin/ffmpeg.exe
 
+      # 🔐 Upload PersepolisBI.exe
+      - name: Upload PersepolisBI.exe
+        uses: actions/upload-artifact@v4
+        with:
+          name: persepolisbi-exe
+          path: persepolis\dist\PersepolisBI.exe
+
+      # 🔐 Upload Persepolis Download Manager.exe
+      - name: Upload DownloadManager.exe
+        uses: actions/upload-artifact@v4
+        with:
+          name: persepolis-exe
+          path: persepolis\dist\Persepolis Download Manager.exe
+
+      # 🔐 Sign PersepolisBI.exe
       - name: Sign PersepolisBI.exe
         uses: signpath/github-action-submit-signing-request@v1.1
         with:
-          signpath-organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
           project-slug: persepolis
           signing-policy-slug: test-signing
-          artifact-path: persepolis\dist\PersepolisBI.exe
-          signpath-api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          github-artifact-id: persepolisbi-exe
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-for-completion: true
         id: sign_bi
 
-      # ✅ Sign Persepolis Download Manager.exe
-      - name: Sign Persepolis Download Manager.exe
+      # 🔐 Sign Download Manager.exe
+      - name: Sign Download Manager.exe
         uses: signpath/github-action-submit-signing-request@v1.1
         with:
-          signpath-organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
           project-slug: persepolis
           signing-policy-slug: test-signing
-          artifact-path: persepolis\dist\Persepolis Download Manager.exe
-          signpath-api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          github-artifact-id: persepolis-exe
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-for-completion: true
         id: sign_main
 
-      # ✅ Download signed files (overwrite originals)
+      # 📥 Download signed files
       - name: Download signed files
         run: |
           curl -L "${{ steps.sign_bi.outputs.signed-artifact-url }}" -o persepolis/dist/PersepolisBI.exe
           curl -L "${{ steps.sign_main.outputs.signed-artifact-url }}" -o "persepolis/dist/Persepolis Download Manager.exe"
 
-      # ✅ Build installer using signed EXEs
+      # 🧱 Build installer with signed files
       - name: Build Installer
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
         with:
           path: persepolis-windows-package-build\setupX64.iss
           options: /O+
 
-      # ✅ Sign the installer
+      # 🔐 Upload installer for signing
+      - name: Upload Installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: persepolis-installer
+          path: persepolis-windows-package-build\Output\PersepolisInstaller.exe
+
+      # 🔐 Sign installer
       - name: Sign installer
         uses: signpath/github-action-submit-signing-request@v1.1
         with:
-          signpath-organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
           project-slug: persepolis
           signing-policy-slug: test-signing
-          artifact-path: persepolis-windows-package-build\Output\PersepolisInstaller.exe
-          signpath-api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          github-artifact-id: persepolis-installer
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-for-completion: true
         id: sign_installer
 
-      # ✅ Download signed installer and archive it
+      # 📥 Download signed installer
       - name: Download signed installer
         run: |
           curl -L "${{ steps.sign_installer.outputs.signed-artifact-url }}" -o persepolis-windows-package-build\Output\PersepolisDMInstaller.exe
 
+      # 🗃️ Archive signed installer
       - name: Archive signed installer
         uses: actions/upload-artifact@v4
         with:
           name: Signed Persepolis Installer
-          path: persepolis-windows-package-build\Output\
+          path: persepolis-windows-package-build\Output\PersepolisDMInstaller.exe
