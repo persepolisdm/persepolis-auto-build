@@ -39,6 +39,7 @@ jobs:
 
       # 🔐 Upload PersepolisBI.exe
       - name: Upload PersepolisBI.exe
+        id: upPBI
         uses: actions/upload-artifact@v4
         with:
           name: persepolisbi-exe
@@ -46,6 +47,7 @@ jobs:
 
       # 🔐 Upload Persepolis Download Manager.exe
       - name: Upload DownloadManager.exe
+        id: upPDM
         uses: actions/upload-artifact@v4
         with:
           name: persepolis-exe
@@ -60,7 +62,7 @@ jobs:
           project-slug: persepolis
           signing-policy-slug: test-signing
           artifact-configuration-slug: initial
-          github-artifact-id: persepolisbi-exe
+          github-artifact-id: ${{ steps.upPBI.outputs.artifact-id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-completion: true
         id: sign_bi
@@ -74,7 +76,7 @@ jobs:
           project-slug: persepolis
           signing-policy-slug: test-signing
           artifact-configuration-slug: initial
-          github-artifact-id: persepolis-exe
+          github-artifact-id: ${{ steps.upPDM.outputs.artifact-id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-completion: true
         id: sign_main
@@ -94,6 +96,7 @@ jobs:
 
       # 🔐 Upload installer for signing
       - name: Upload Installer
+        id: upPDMI
         uses: actions/upload-artifact@v4
         with:
           name: persepolis-installer
@@ -108,7 +111,7 @@ jobs:
           project-slug: persepolis
           signing-policy-slug: test-signing
           artifact-configuration-slug: initial
-          github-artifact-id: persepolis-installer
+          github-artifact-id: ${{ steps.upPDMI.outputs.artifact-id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-completion: true
         id: sign_installer
