@@ -59,6 +59,7 @@ jobs:
           organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
           project-slug: persepolis
           signing-policy-slug: test-signing
+          artifact-configuration-slug: initial
           github-artifact-id: persepolisbi-exe
           github-token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-completion: true
@@ -72,6 +73,7 @@ jobs:
           organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
           project-slug: persepolis
           signing-policy-slug: test-signing
+          artifact-configuration-slug: initial
           github-artifact-id: persepolis-exe
           github-token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-completion: true
@@ -105,6 +107,7 @@ jobs:
           organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
           project-slug: persepolis
           signing-policy-slug: test-signing
+          artifact-configuration-slug: initial
           github-artifact-id: persepolis-installer
           github-token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-completion: true
