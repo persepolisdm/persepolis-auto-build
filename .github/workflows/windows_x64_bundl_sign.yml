@@ -1,0 +1,94 @@
+name: Package Persepolis DM for windows x64
+
+on: workflow_dispatch
+
+jobs:
+  bundle-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Get persepolis
+        uses: actions/checkout@v4
+        with:
+          repository: persepolisdm/persepolis
+          path: persepolis
+
+      - name: Get build assets
+        uses: actions/checkout@v4
+        with:
+          repository: persepolisdm/persepolis-windows-package-build
+          path: persepolis-windows-package-build
+
+      - name: Install requirements
+        run: pip install PySide6 requests pypiwin32 setproctitle psutil yt_dlp pyinstaller urllib3 pysocks
+
+      - name: Download ffmpeg
+        uses: robinraju/release-downloader@v1.10
+        with:
+          repository: "yt-dlp/FFmpeg-Builds"
+          latest: true
+          fileName: "ffmpeg-master-latest-win64-gpl.zip"
+
+      - name: Build
+        run: |
+          cd persepolis
+          pyinstaller '.\resources\PersepolisBI.py' -F -i '..\persepolis-windows-package-build\persepolis2.ico' -n "PersepolisBI" --version-file '..\persepolis-windows-package-build\bi_version.py' --clean
+          pyinstaller '.\persepolis\Persepolis Download Manager.py' -F -w -i '..\persepolis-windows-package-build\persepolis1.ico' -n "Persepolis Download Manager" --version-file '..\persepolis-windows-package-build\version.py' --clean
+
+      - name: Extract ffmpeg
+        run: 7z e ffmpeg-master-latest-win64-gpl.zip -o'.\persepolis\dist' ffmpeg-master-latest-win64-gpl/bin/ffmpeg.exe
+
+      - name: Sign PersepolisBI.exe
+        uses: signpath/github-action-submit-signing-request@v1.1
+        with:
+          signpath-organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: persepolis
+          signing-policy-slug: test-signing
+          artifact-path: persepolis\dist\PersepolisBI.exe
+          signpath-api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+        id: sign_bi
+
+      # ✅ Sign Persepolis Download Manager.exe
+      - name: Sign Persepolis Download Manager.exe
+        uses: signpath/github-action-submit-signing-request@v1.1
+        with:
+          signpath-organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: persepolis
+          signing-policy-slug: test-signing
+          artifact-path: persepolis\dist\Persepolis Download Manager.exe
+          signpath-api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+        id: sign_main
+
+      # ✅ Download signed files (overwrite originals)
+      - name: Download signed files
+        run: |
+          curl -L "${{ steps.sign_bi.outputs.signed-artifact-url }}" -o persepolis/dist/PersepolisBI.exe
+          curl -L "${{ steps.sign_main.outputs.signed-artifact-url }}" -o "persepolis/dist/Persepolis Download Manager.exe"
+
+      # ✅ Build installer using signed EXEs
+      - name: Build Installer
+        uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
+        with:
+          path: persepolis-windows-package-build\setupX64.iss
+          options: /O+
+
+      # ✅ Sign the installer
+      - name: Sign installer
+        uses: signpath/github-action-submit-signing-request@v1.1
+        with:
+          signpath-organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: persepolis
+          signing-policy-slug: test-signing
+          artifact-path: persepolis-windows-package-build\Output\PersepolisInstaller.exe
+          signpath-api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+        id: sign_installer
+
+      # ✅ Download signed installer and archive it
+      - name: Download signed installer
+        run: |
+          curl -L "${{ steps.sign_installer.outputs.signed-artifact-url }}" -o persepolis-windows-package-build\Output\PersepolisDMInstaller.exe
+
+      - name: Archive signed installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: Signed Persepolis Installer
+          path: persepolis-windows-package-build\Output\
