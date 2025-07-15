@@ -84,8 +84,8 @@ jobs:
       # 📥 Download signed files
       - name: Download signed files
         run: |
-          curl -L "${{ steps.sign_bi.outputs.signed-artifact-url }}" -o persepolis/dist/PersepolisBI.exe
-          curl -L "${{ steps.sign_main.outputs.signed-artifact-url }}" -o "persepolis/dist/Persepolis Download Manager.exe"
+          curl -L "${{ steps.sign_bi.outputs.signed-artifact-download-url }}" -o persepolis/dist/PersepolisBI.exe
+          curl -L "${{ steps.sign_main.outputs.signed-artifact-download-url }}" -o "persepolis/dist/Persepolis Download Manager.exe"
 
       # 🧱 Build installer with signed files
       - name: Build Installer
@@ -119,7 +119,7 @@ jobs:
       # 📥 Download signed installer
       - name: Download signed installer
         run: |
-          curl -L "${{ steps.sign_installer.outputs.signed-artifact-url }}" -o persepolis-windows-package-build\Output\PersepolisDMInstaller.exe
+          curl -L "${{ steps.sign_installer.outputs.signed-artifact-download-url }}" -o persepolis-windows-package-build\Output\PersepolisDMInstaller.exe
 
       # 🗃️ Archive signed installer
       - name: Archive signed installer
