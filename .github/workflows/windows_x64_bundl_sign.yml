@@ -61,7 +61,7 @@ jobs:
           organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
           project-slug: persepolis
           signing-policy-slug: test-signing
-          artifact-configuration-slug: initial
+          artifact-configuration-slug: BI
           github-artifact-id: ${{ steps.upPBI.outputs.artifact-id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-completion: true
@@ -75,7 +75,7 @@ jobs:
           organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
           project-slug: persepolis
           signing-policy-slug: test-signing
-          artifact-configuration-slug: initial
+          artifact-configuration-slug: DM
           github-artifact-id: ${{ steps.upPDM.outputs.artifact-id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-completion: true
@@ -110,7 +110,7 @@ jobs:
           organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
           project-slug: persepolis
           signing-policy-slug: test-signing
-          artifact-configuration-slug: initial
+          artifact-configuration-slug: ins
           github-artifact-id: ${{ steps.upPDMI.outputs.artifact-id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-completion: true
