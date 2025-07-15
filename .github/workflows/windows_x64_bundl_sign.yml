@@ -100,7 +100,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: persepolis-installer
-          path: persepolis-windows-package-build\Output\PersepolisInstaller.exe
+          path: persepolis-windows-package-build\Output\Persepolis Download Manager.exe
 
       # 🔐 Sign installer
       - name: Sign installer
