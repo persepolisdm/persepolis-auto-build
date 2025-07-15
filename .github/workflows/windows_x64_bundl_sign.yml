@@ -95,6 +95,7 @@ jobs:
           options: /O+
 
       - name: Rename installer to fixed name for signing
+        shell: cmd
         run: |
           for %%f in (persepolis-windows-package-build\Output\persepolis_*.exe) do ren "%%f" PersepolisInstaller.exe
       
