@@ -65,6 +65,7 @@ jobs:
           github-artifact-id: ${{ steps.upPBI.outputs.artifact-id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-completion: true
+          output-artifact-directory: persepolis/dist/
         id: sign_bi
 
       # 🔐 Sign Download Manager.exe
@@ -79,13 +80,8 @@ jobs:
           github-artifact-id: ${{ steps.upPDM.outputs.artifact-id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-completion: true
+          output-artifact-directory: persepolis/dist/
         id: sign_main
-
-      # 📥 Download signed files
-      - name: Download signed files
-        run: |
-          curl --fail -L "${{ steps.sign_bi.outputs.signed-artifact-download-url }}" -o persepolis/dist/PersepolisBI.exe
-          curl --fail -L "${{ steps.sign_main.outputs.signed-artifact-download-url }}" -o "persepolis/dist/Persepolis Download Manager.exe"
 
       - name: Check downloaded files
         run: |
@@ -123,12 +119,8 @@ jobs:
           github-artifact-id: ${{ steps.upPDMI.outputs.artifact-id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-completion: true
+          output-artifact-directory: persepolis-windows-package-build\Output\
         id: sign_installer
-
-      # 📥 Download signed installer
-      - name: Download signed installer
-        run: |
-          curl -L "${{ steps.sign_installer.outputs.signed-artifact-download-url }}" -o persepolis-windows-package-build\Output\PersepolisDMInstaller.exe
 
       # 🗃️ Archive signed installer
       - name: Archive signed installer
