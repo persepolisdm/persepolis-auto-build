@@ -84,8 +84,12 @@ jobs:
       # 📥 Download signed files
       - name: Download signed files
         run: |
-          curl -L "${{ steps.sign_bi.outputs.signed-artifact-download-url }}" -o persepolis/dist/PersepolisBI.exe
-          curl -L "${{ steps.sign_main.outputs.signed-artifact-download-url }}" -o "persepolis/dist/Persepolis Download Manager.exe"
+          curl --fail -L "${{ steps.sign_bi.outputs.signed-artifact-download-url }}" -o persepolis/dist/PersepolisBI.exe
+          curl --fail -L "${{ steps.sign_main.outputs.signed-artifact-download-url }}" -o "persepolis/dist/Persepolis Download Manager.exe"
+
+      - name: Check downloaded files
+        run: |
+          dir persepolis\dist
 
       # 🧱 Build installer with signed files
       - name: Build Installer
