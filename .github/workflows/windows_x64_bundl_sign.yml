@@ -127,4 +127,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Signed Persepolis Installer
-          path: persepolis-windows-package-build\Output\PersepolisDMInstaller.exe
+          path: persepolis-windows-package-build\Output\
