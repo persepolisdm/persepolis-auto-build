@@ -37,7 +37,6 @@ jobs:
       - name: Extract ffmpeg
         run: 7z e ffmpeg-master-latest-win64-gpl.zip -o'.\persepolis\dist' ffmpeg-master-latest-win64-gpl/bin/ffmpeg.exe
 
-      # 🔐 Upload PersepolisBI.exe
       - name: Upload PersepolisBI.exe
         id: upPBI
         uses: actions/upload-artifact@v4
@@ -45,7 +44,6 @@ jobs:
           name: persepolisbi-exe
           path: persepolis\dist\PersepolisBI.exe
 
-      # 🔐 Upload Persepolis Download Manager.exe
       - name: Upload DownloadManager.exe
         id: upPDM
         uses: actions/upload-artifact@v4
@@ -53,7 +51,6 @@ jobs:
           name: persepolis-exe
           path: persepolis\dist\Persepolis Download Manager.exe
 
-      # 🔐 Sign PersepolisBI.exe
       - name: Sign PersepolisBI.exe
         uses: signpath/github-action-submit-signing-request@v1.1
         with:
@@ -68,7 +65,6 @@ jobs:
           output-artifact-directory: persepolis/dist/
         id: sign_bi
 
-      # 🔐 Sign Download Manager.exe
       - name: Sign Download Manager.exe
         uses: signpath/github-action-submit-signing-request@v1.1
         with:
@@ -83,11 +79,6 @@ jobs:
           output-artifact-directory: persepolis/dist/
         id: sign_main
 
-      - name: Check downloaded files
-        run: |
-          dir persepolis\dist
-
-      # 🧱 Build installer with signed files
       - name: Build Installer
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
         with:
@@ -99,7 +90,6 @@ jobs:
         run: |
           for %%f in (persepolis-windows-package-build\Output\persepolis_*.exe) do ren "%%f" PersepolisInstaller.exe
       
-      # 🔐 Upload installer for signing
       - name: Upload Installer
         id: upPDMI
         uses: actions/upload-artifact@v4
@@ -107,7 +97,6 @@ jobs:
           name: persepolis-installer
           path: persepolis-windows-package-build\Output\
 
-      # 🔐 Sign installer
       - name: Sign installer
         uses: signpath/github-action-submit-signing-request@v1.1
         with:
@@ -122,7 +111,6 @@ jobs:
           output-artifact-directory: persepolis-windows-package-build\Output\
         id: sign_installer
 
-      # 🗃️ Archive signed installer
       - name: Archive signed installer
         uses: actions/upload-artifact@v4
         with:
