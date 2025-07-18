@@ -34,8 +34,8 @@ jobs:
       - name: Build with Nuitka
         run: |
           call cd persepolis
-          call python -m nuitka --standalone --onefile --enable-plugin=pyside6 --msvc=latest --cl-option="-Zm200" --low-memory --windows-icon-from-ico=..\persepolis-windows-package-build\persepolis2.ico --output-filename="PersepolisBI.exe" resources\PersepolisBI.py
-          call python -m nuitka --standalone --onefile --enable-plugin=pyside6 --msvc=latest --cl-option="-Zm200" --low-memory --windows-icon-from-ico=..\persepolis-windows-package-build\persepolis1.ico --windows-console-mode=disable --output-filename="Persepolis Download Manager.exe" "persepolis\Persepolis Download Manager.py"
+          call python -m nuitka --standalone --onefile --enable-plugin=pyside6 --msvc=latest --low-memory --windows-icon-from-ico=..\persepolis-windows-package-build\persepolis2.ico --output-filename="PersepolisBI.exe" resources\PersepolisBI.py
+          call python -m nuitka --standalone --onefile --enable-plugin=pyside6 --msvc=latest --low-memory --windows-icon-from-ico=..\persepolis-windows-package-build\persepolis1.ico --windows-console-mode=disable --output-filename="Persepolis Download Manager.exe" "persepolis\Persepolis Download Manager.py"
           mkdir dist
           move PersepolisBI.exe dist\
           move "Persepolis Download Manager.exe" dist\
