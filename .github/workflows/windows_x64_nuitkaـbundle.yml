@@ -31,16 +31,25 @@ jobs:
       - name: Install MSVC build tools
         uses: ilammy/msvc-dev-cmd@v1
 
-      - name: Build with Nuitka
+      - name: Build PersepolisBI
         run: |
           call cd persepolis
           call python -m nuitka --standalone --onefile --enable-plugin=pyside6 --msvc=latest --low-memory --windows-icon-from-ico=..\persepolis-windows-package-build\persepolis2.ico --output-filename="PersepolisBI.exe" resources\PersepolisBI.py
-          call python -m nuitka --standalone --onefile --enable-plugin=pyside6 --msvc=latest --low-memory --windows-icon-from-ico=..\persepolis-windows-package-build\persepolis1.ico --windows-console-mode=disable --output-filename="Persepolis Download Manager.exe" "persepolis\Persepolis Download Manager.py"
-          mkdir dist
-          move PersepolisBI.exe dist\
-          move "Persepolis Download Manager.exe" dist\
         shell: cmd
-  
+
+      - name: Build Persepolis Download Manager
+        run: |
+          call cd persepolis
+          call python -m nuitka --standalone --onefile --enable-plugin=pyside6 --msvc=latest --low-memory --windows-icon-from-ico=..\persepolis-windows-package-build\persepolis1.ico --windows-console-mode=disable --output-filename="Persepolis Download Manager.exe" "persepolis\Persepolis Download Manager.py"
+        shell: cmd
+
+      - name: Move executables to dist
+        run: |
+          mkdir persepolis\dist
+          move persepolis\PersepolisBI.exe persepolis\dist\
+          move "persepolis\Persepolis Download Manager.exe" persepolis\dist\
+        shell: cmd
+
       - name: Extract ffmpeg
         run: 7z e ffmpeg-master-latest-win64-gpl.zip -o'.\persepolis\dist' ffmpeg-master-latest-win64-gpl/bin/ffmpeg.exe
 
