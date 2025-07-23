@@ -1,5 +1,10 @@
 name: Package Persepolis DM for macos intel
 on: workflow_dispatch
+    inputs:
+      commit:
+        description: 'Branch/Tag/SHA to checkout'
+        required: false
+        default: 'main'
 jobs:
   bundle-macos:
     runs-on: macos-latest
@@ -18,6 +23,14 @@ jobs:
         run: |
           cd mac-package-build
           git clone https://github.com/persepolisdm/persepolis.git
+          cd persepolis
+          if [ "${{ github.event.inputs.commit }}" != "" ]; then
+            echo "Checking out to commit: ${{ github.event.inputs.commit }}"
+            git checkout ${{ github.event.inputs.commit }}
+          else
+            echo "No specific commit provided. Using latest commit."
+          fi
+          cd ..
           find persepolis/persepolis -type f -exec perl -i -pe 's/persepolis.scripts/scripts/g' '{}' \;
           find persepolis/persepolis -type f -exec perl -i -pe 's/persepolis.gui/gui/g' '{}' \;
           pyinstaller app.spec
