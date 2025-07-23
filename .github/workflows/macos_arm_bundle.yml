@@ -5,7 +5,7 @@ on:
       commit:
         description: 'Branch/Tag/SHA to checkout'
         required: false
-        default: 'main'
+        default: ''
 jobs:
   bundle-macos:
     runs-on: macos-latest
