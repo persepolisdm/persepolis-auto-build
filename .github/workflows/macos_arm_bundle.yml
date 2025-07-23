@@ -17,7 +17,7 @@ jobs:
           repository: persepolisdm/mac-package-build
           path: mac-package-build
       - name: Install requirements
-        run: pip install PySide6 requests yt_dlp pyinstaller==6.6.0 urllib3 pysocks
+        run: pip install PySide6 requests yt_dlp pyinstaller==6.10.0 urllib3 pysocks
       - name: Install with Brew
         run: brew install create-dmg unzip tree
       - name: Build
